@@ -7,7 +7,7 @@ import (
 	"github.com/micmonay/keybd_event"
 )
 
-func sendKeys(barcode string) {
+func SendKeys(barcode string) {
 	kb, err := keybd_event.NewKeyBonding()
 	if err != nil {
 		panic(err)
