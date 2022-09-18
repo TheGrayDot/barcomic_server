@@ -1,8 +1,11 @@
 package server
 
 import (
+	"crypto/tls"
 	"flag"
+	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -10,10 +13,26 @@ var success []byte = []byte("OK")
 var error []byte = []byte("ERROR")
 
 func server() {
+	fmt.Println("[*] Generating TLS certificate...")
+	tlsCert := GenerateTLSCertificate()
+
+	tlsConfig := &tls.Config{
+		Certificates: []tls.Certificate{tlsCert},
+		// Other options
+	}
+
+	server := http.Server{
+		Addr:      ConnHost + ":" + ConnPort,
+		TLSConfig: tlsConfig,
+	}
+
 	http.HandleFunc("/health", healthHandler)
 	http.HandleFunc("/barcode", barcodeHandler)
-	var hostname = ConnHost + ":" + ConnPort
-	http.ListenAndServe(hostname, nil)
+
+	fmt.Println("[*] Starting HTTP server...")
+	if err := server.ListenAndServeTLS("", ""); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func healthHandler(w http.ResponseWriter, req *http.Request) {
@@ -28,7 +47,7 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 
 func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
-		req.Body = http.MaxBytesReader(w, req.Body, 256)
+		req.Body = http.MaxBytesReader(w, req.Body, 10000)
 		buffer, err := io.ReadAll(req.Body)
 		if err != nil {
 			panic(err)
