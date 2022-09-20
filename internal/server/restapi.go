@@ -18,7 +18,6 @@ func server() {
 
 	tlsConfig := &tls.Config{
 		Certificates: []tls.Certificate{tlsCert},
-		// Other options
 	}
 
 	server := http.Server{
@@ -28,24 +27,30 @@ func server() {
 
 	http.HandleFunc("/health", healthHandler)
 	http.HandleFunc("/barcode", barcodeHandler)
+	http.HandleFunc("/", otherHandler)
 
 	fmt.Println("[*] Starting HTTP server...")
+	fmt.Println()
 	if err := server.ListenAndServeTLS("", ""); err != nil {
-		log.Fatal(err)
+		log.Fatalf("ERROR: %v", err)
 	}
 }
 
 func healthHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
 	if req.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
 		w.Write(success)
+		return
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(error)
+		return
 	}
 }
 
 func barcodeHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
 	if req.Method == "POST" {
 		req.Body = http.MaxBytesReader(w, req.Body, 10000)
 		buffer, err := io.ReadAll(req.Body)
@@ -55,15 +60,25 @@ func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 
 		bufferString := string(buffer)
 
+		// Only send to keyvent if not unit testing
 		if flag.Lookup("test.v") == nil {
-			// Only send to keyvent if not unit testing
 			SendKeys(bufferString)
 		}
 
 		w.WriteHeader(http.StatusOK)
 		w.Write(buffer)
+		return
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(error)
+		return
+	}
+}
+
+func otherHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
+	if req.URL.Path != "/" {
+		http.NotFound(w, req)
+		return
 	}
 }
