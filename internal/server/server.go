@@ -4,16 +4,17 @@ import (
 	"fmt"
 )
 
+// Set server defaults
 var ConnHost string = "0.0.0.0"
 var ConnPort string = "9999"
 
 func Server() {
 	interactiveInput()
-	server()
+	restapi()
 }
 
 func interactiveInput() {
-	fmt.Print("[*] Start server using default 0.0.0.0:9999 [Y/n]")
+	fmt.Printf("[*] Start server using default %s:%s [Y/n]", ConnHost, ConnPort)
 	var defaults string
 	fmt.Scanln(&defaults)
 	if defaults == "" || defaults == "y" {

@@ -36,15 +36,6 @@ func TestHealthHandler(t *testing.T) {
 			}
 		})
 	}
-
-	w := httptest.NewRecorder()
-	r := httptest.NewRequest(http.MethodGet, "/health", nil)
-
-	healthHandler(w, r)
-
-	if w.Code != http.StatusOK {
-		t.Errorf("Expected status: %d, but got: %d", http.StatusOK, w.Code)
-	}
 }
 
 func TestBarcodeHandler(t *testing.T) {
@@ -77,13 +68,28 @@ func TestBarcodeHandler(t *testing.T) {
 			}
 		})
 	}
+}
 
-	w := httptest.NewRecorder()
-	r := httptest.NewRequest(http.MethodGet, "/health", nil)
+func TestOtherHandler(t *testing.T) {
+	table := []struct {
+		url        string
+		method     string
+		statusCode int
+	}{
+		{`/doesntexist`, http.MethodGet, 404},
+		{`/doesntexist`, http.MethodPost, 404},
+	}
 
-	healthHandler(w, r)
+	for _, v := range table {
+		t.Run(v.url, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			r := httptest.NewRequest(v.method, v.url, nil)
 
-	if w.Code != http.StatusOK {
-		t.Errorf("Expected status: %d, but got: %d", http.StatusOK, w.Code)
+			otherHandler(w, r)
+
+			if w.Code != v.statusCode {
+				t.Fatalf("Expected status code: %d, but got: %d", v.statusCode, w.Code)
+			}
+		})
 	}
 }

@@ -12,7 +12,7 @@ import (
 var success []byte = []byte("OK")
 var error []byte = []byte("ERROR")
 
-func server() {
+func restapi() {
 	fmt.Println("[*] Generating TLS certificate...")
 	tlsCert := GenerateTLSCertificate()
 
@@ -36,8 +36,15 @@ func server() {
 	}
 }
 
+func verboseLoggingHandler(req *http.Request) {
+	// Only log if not unit testing
+	if flag.Lookup("test.v") == nil {
+		fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
+	}
+}
+
 func healthHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
+	verboseLoggingHandler(req)
 	if req.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
 		w.Write(success)
@@ -50,7 +57,7 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func barcodeHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
+	verboseLoggingHandler(req)
 	if req.Method == "POST" {
 		req.Body = http.MaxBytesReader(w, req.Body, 10000)
 		buffer, err := io.ReadAll(req.Body)
@@ -76,7 +83,7 @@ func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func otherHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
+	verboseLoggingHandler(req)
 	if req.URL.Path != "/" {
 		http.NotFound(w, req)
 		return
