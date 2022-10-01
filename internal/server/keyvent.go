@@ -7,8 +7,9 @@ import (
 	"github.com/micmonay/keybd_event"
 )
 
-func SendKeys(barcode string) {
-	kb, err := keybd_event.NewKeyBonding()
+func InitalizeKeys() keybd_event.KeyBonding {
+	// Initialize keyboard event
+	keyBonding, err := keybd_event.NewKeyBonding()
 	if err != nil {
 		panic(err)
 	}
@@ -18,40 +19,45 @@ func SendKeys(barcode string) {
 		time.Sleep(2 * time.Second)
 	}
 
+	return keyBonding
+}
+
+func SendKeys(barcode string, keyBonding keybd_event.KeyBonding) {
+	keyBonding.Clear()
 	for _, digit := range barcode {
 		// Select keys to be pressed
 		switch digit {
 		case '0':
-			kb.SetKeys(keybd_event.VK_0)
+			keyBonding.SetKeys(keybd_event.VK_0)
 		case '1':
-			kb.SetKeys(keybd_event.VK_1)
+			keyBonding.SetKeys(keybd_event.VK_1)
 		case '2':
-			kb.SetKeys(keybd_event.VK_2)
+			keyBonding.SetKeys(keybd_event.VK_2)
 		case '3':
-			kb.SetKeys(keybd_event.VK_3)
+			keyBonding.SetKeys(keybd_event.VK_3)
 		case '4':
-			kb.SetKeys(keybd_event.VK_4)
+			keyBonding.SetKeys(keybd_event.VK_4)
 		case '5':
-			kb.SetKeys(keybd_event.VK_5)
+			keyBonding.SetKeys(keybd_event.VK_5)
 		case '6':
-			kb.SetKeys(keybd_event.VK_6)
+			keyBonding.SetKeys(keybd_event.VK_6)
 		case '7':
-			kb.SetKeys(keybd_event.VK_7)
+			keyBonding.SetKeys(keybd_event.VK_7)
 		case '8':
-			kb.SetKeys(keybd_event.VK_8)
+			keyBonding.SetKeys(keybd_event.VK_8)
 		case '9':
-			kb.SetKeys(keybd_event.VK_9)
+			keyBonding.SetKeys(keybd_event.VK_9)
 		}
 
 		// Press, then release the keys
-		kb.Press()
+		keyBonding.Press()
 		time.Sleep(10 * time.Millisecond)
-		kb.Release()
+		keyBonding.Release()
 	}
 
 	// Press return
-	kb.SetKeys(keybd_event.VK_ENTER)
-	kb.Press()
+	keyBonding.SetKeys(keybd_event.VK_ENTER)
+	keyBonding.Press()
 	time.Sleep(10 * time.Millisecond)
-	kb.Release()
+	keyBonding.Release()
 }

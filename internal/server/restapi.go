@@ -7,12 +7,22 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/micmonay/keybd_event"
 )
 
 var success []byte = []byte("OK")
 var error []byte = []byte("ERROR")
+var keyBonding keybd_event.KeyBonding
 
 func restapi() {
+	startServer()
+}
+
+func startServer() {
+	fmt.Println("[*] Initializing keyboard...")
+	keyBonding = InitalizeKeys()
+
 	fmt.Println("[*] Generating TLS certificate...")
 	tlsCert := GenerateTLSCertificate()
 
@@ -69,7 +79,7 @@ func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 
 		// Only send to keyvent if not unit testing
 		if flag.Lookup("test.v") == nil {
-			SendKeys(bufferString)
+			SendKeys(bufferString, keyBonding)
 		}
 
 		w.WriteHeader(http.StatusOK)
