@@ -15,7 +15,8 @@ func TestGenerateTLSCertificate(t *testing.T) {
 		panic(err)
 	}
 
-	serverHost := ConnHost + ":" + ConnPort
+	// Check cert common name
+	serverHost := config.addr + ":" + config.port
 	if cert.Subject.CommonName != serverHost {
 		t.Fatalf("Expected host: %s, but got: %d", serverHost, cert.IPAddresses)
 	}

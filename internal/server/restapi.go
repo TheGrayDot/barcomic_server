@@ -15,11 +15,12 @@ var success []byte = []byte("OK")
 var error []byte = []byte("ERROR")
 var keyBonding keybd_event.KeyBonding
 
-func restapi() {
+func restAPI() {
 	startServer()
 }
 
 func startServer() {
+	fmt.Printf("[*] Starting server using %s:%s\n", config.addr, config.port)
 	fmt.Println("[*] Initializing keyboard...")
 	keyBonding = InitalizeKeys()
 
@@ -31,7 +32,7 @@ func startServer() {
 	}
 
 	server := http.Server{
-		Addr:      ConnHost + ":" + ConnPort,
+		Addr:      config.addr + ":" + config.port,
 		TLSConfig: tlsConfig,
 	}
 

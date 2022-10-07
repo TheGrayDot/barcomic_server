@@ -43,7 +43,7 @@ func GenerateTLSCertificate() tls.Certificate {
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			CommonName:         ConnHost + ":" + ConnPort,
+			CommonName:         config.addr + ":" + config.port,
 			Country:            []string{"NZ"},
 			Organization:       []string{"thegraydot.io"},
 			OrganizationalUnit: []string{"barcomic"},

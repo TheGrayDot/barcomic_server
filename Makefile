@@ -14,7 +14,7 @@ format:
 test:
 	@go test -v internal/server
 
-test_coverage:
+coverage:
 	@go test -cover internal/server/
 
 build:
