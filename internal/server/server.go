@@ -8,6 +8,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/mdp/qrterminal"
 )
 
 type Config struct {
@@ -36,6 +38,8 @@ func Server() {
 		fmt.Printf("[*] Error: Invalid port %s\n", config.port)
 		os.Exit(1)
 	}
+
+	printQRCode(config.addr, config.port)
 
 	// Start the HTTP API
 	restAPI()
@@ -90,4 +94,16 @@ func validatePort(port string) bool {
 		return true
 	}
 	return false
+}
+
+func printQRCode(addr, port string) {
+	qrconfig := qrterminal.Config{
+		Level:     qrterminal.M,
+		Writer:    os.Stdout,
+		BlackChar: qrterminal.WHITE,
+		WhiteChar: qrterminal.BLACK,
+		QuietZone: 1,
+	}
+	host := addr + ":" + port
+	qrterminal.GenerateWithConfig(host, qrconfig)
 }

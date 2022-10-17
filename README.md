@@ -1,3 +1,3 @@
 # barcomic_server
 
-A HTTP server for receiving comic book barcodes from the Barcomic Android application.
+An HTTP API for receiving comic book barcodes from the Barcomic Android application
