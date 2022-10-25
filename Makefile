@@ -1,7 +1,10 @@
 BINARY_NAME=barcomic_server
 
 run:
-	@go run cmd/barcomic_server/main.go  
+	@go run cmd/barcomic_server/main.go
+
+run_interactive:
+	@go run cmd/barcomic_server/main.go -i
 
 clean:
 	go clean

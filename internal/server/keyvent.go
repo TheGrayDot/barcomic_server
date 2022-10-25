@@ -1,6 +1,7 @@
 package server
 
 import (
+	"flag"
 	"runtime"
 	"time"
 
@@ -55,9 +56,11 @@ func SendKeys(barcode string, keyBonding keybd_event.KeyBonding) {
 		keyBonding.Release()
 	}
 
-	// Press return
-	keyBonding.SetKeys(keybd_event.VK_ENTER)
-	keyBonding.Press()
-	time.Sleep(10 * time.Millisecond)
-	keyBonding.Release()
+	// Press keys, if not unit testing
+	if flag.Lookup("test.v") == nil {
+		keyBonding.SetKeys(keybd_event.VK_ENTER)
+		keyBonding.Press()
+		time.Sleep(10 * time.Millisecond)
+		keyBonding.Release()
+	}
 }

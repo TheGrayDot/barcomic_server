@@ -1,9 +1,9 @@
 package server
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"regexp"
 	"strconv"
@@ -24,11 +24,6 @@ func Server() {
 	// Parse the CLI arguments
 	handleArguments()
 
-	// If requested, run the interactive server config
-	if config.interactive {
-		runInteractiveConfig()
-	}
-
 	// Validate IP address and port before starting server
 	if !validateAddr(config.addr) {
 		fmt.Printf("[*] Error: Invalid IP address %s\n", config.addr)
@@ -48,33 +43,66 @@ func Server() {
 func handleArguments() {
 	addr := flag.String("a", "0.0.0.0", "IP address to listen on")
 	port := flag.String("p", "9999", "Port to listen on")
-	interactive := flag.Bool("i", false, "Run interactive configuration")
+	interactive := flag.Bool("i", true, "Run interactive configuration")
 	flag.Parse()
 	config.addr = *addr
 	config.port = *port
 	config.interactive = *interactive
+
+	// If requested, run the interactive server config
+	if !config.interactive {
+		return
+	} else {
+		runInteractiveConfig()
+	}
 }
 
 func runInteractiveConfig() {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("[*] Start server using default %s:%s [Y/n]", config.addr, config.port)
-	response, _ := reader.ReadString('\n')
-	response = strings.TrimSpace(response)
-	response = strings.ToLower(response)
-
-	if response == "y" || response == "" {
+	// Get all network interfaces
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		fmt.Print(fmt.Errorf("selectIpAddress: %+v\n", err.Error()))
 		return
-	} else {
-		fmt.Print("[*] Enter IP address: ")
-		var addr string
-		fmt.Scanln(&addr)
-		config.addr = strings.Trim(addr, " ")
-
-		fmt.Print("[*] Enter port: ")
-		var port string
-		fmt.Scanln(&port)
-		config.port = strings.Trim(port, " ")
 	}
+
+	interfacesMap := make(map[string]string)
+
+	// Loop through interfaces
+	for _, i := range interfaces {
+		// Get interface name (e.g., wlan0)
+		byNameInterface, err := net.InterfaceByName(i.Name)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// Get addresses on interface and loop
+		addresses, err := byNameInterface.Addrs()
+		for _, address := range addresses {
+			// Check address is IP4 and not loopback (127.0.0.1)
+			if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+				if ipnet.IP.To4() != nil {
+					interfacesMap[ipnet.IP.String()] = i.Name
+				}
+			}
+		}
+	}
+
+	index := 1
+	fmt.Printf("[*] The following addresses are available...\n")
+	for address, networkAdapterName := range interfacesMap {
+		fmt.Printf("    [%d] %s (%s)\n", index, address, networkAdapterName)
+		index = index + 1
+	}
+
+	fmt.Print("[*] Enter IP address: ")
+	var addr string
+	fmt.Scanln(&addr)
+	config.addr = strings.Trim(addr, " ")
+
+	fmt.Print("[*] Enter port: ")
+	var port string
+	fmt.Scanln(&port)
+	config.port = strings.Trim(port, " ")
 }
 
 func validateAddr(addr string) bool {
