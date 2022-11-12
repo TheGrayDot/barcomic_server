@@ -4,6 +4,9 @@ run:
 clean:
 	./scripts/build_clean.sh
 
+install_golang_deps:
+	@go get internal/server
+
 install_linux_deps:
 	./scripts/install_linux_deps.sh
 

@@ -23,7 +23,7 @@ jobs:
         run: go version
 
       - name: Install golang dependencies
-        run: go get .
+        run: make install_golang_deps
 
       - name: Install robotgo dependencies
         run: make install_linux_deps
