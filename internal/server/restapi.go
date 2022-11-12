@@ -8,12 +8,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/micmonay/keybd_event"
+	"github.com/go-vgo/robotgo"
 )
 
 var success []byte = []byte("OK")
 var error []byte = []byte("ERROR")
-var keyBonding keybd_event.KeyBonding
 
 func restAPI() {
 	startServer()
@@ -21,8 +20,6 @@ func restAPI() {
 
 func startServer() {
 	fmt.Printf("[*] Starting server using %s:%s\n", config.addr, config.port)
-	fmt.Println("[*] Initializing keyboard...")
-	keyBonding = InitalizeKeys()
 
 	fmt.Println("[*] Generating TLS certificate...")
 	tlsCert := GenerateTLSCertificate()
@@ -80,7 +77,8 @@ func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 
 		// Only send to keyvent if not unit testing
 		if flag.Lookup("test.v") == nil {
-			SendKeys(bufferString, keyBonding)
+			robotgo.TypeStr(bufferString)
+			robotgo.KeyTap("enter")
 		}
 
 		w.WriteHeader(http.StatusOK)

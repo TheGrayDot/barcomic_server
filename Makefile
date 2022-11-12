@@ -1,15 +1,11 @@
-BINARY_NAME=barcomic_server
-
 run:
 	@go run cmd/barcomic_server/main.go
 
-run_interactive:
-	@go run cmd/barcomic_server/main.go -i
-
 clean:
-	go clean
-	rm -f bin/${BINARY_NAME}-linux
-	rm -f bin/${BINARY_NAME}-windows
+	./scripts/build_clean.sh
+
+install_linux_deps:
+	./scripts/install_linux_deps.sh
 
 format:
 	@gofmt -l .
@@ -18,8 +14,10 @@ test:
 	@go test -v internal/server
 
 coverage:
-	@go test -cover internal/server/
+	@go test -cover internal/server
 
-build:
-	GOARCH=amd64 GOOS=linux go build -o bin/${BINARY_NAME}-linux cmd/barcomic_server/main.go
-	GOARCH=amd64 GOOS=windows go build -o bin/${BINARY_NAME}-windows cmd/barcomic_server/main.go
+build_linux:
+	./scripts/build_linux.sh
+
+build_windows:
+	./scripts/build_windows.sh
