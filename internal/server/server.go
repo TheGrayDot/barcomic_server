@@ -20,6 +20,9 @@ type Config struct {
 
 var config Config
 
+var Version = "dev"
+var Hash = "mode"
+
 func Server() {
 	// Parse the CLI arguments
 	handleArguments()
@@ -44,7 +47,14 @@ func handleArguments() {
 	addr := flag.String("a", "0.0.0.0", "IP address to listen on")
 	port := flag.String("p", "9999", "Port to listen on")
 	interactive := flag.Bool("i", true, "Run interactive configuration")
+	version := flag.Bool("v", false, "Prints current version")
 	flag.Parse()
+
+	if *version {
+		fmt.Printf("%s-%s\n", Version, Hash)
+		os.Exit(0)
+	}
+
 	config.addr = *addr
 	config.port = *port
 	config.interactive = *interactive
