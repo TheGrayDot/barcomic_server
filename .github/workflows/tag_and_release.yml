@@ -27,13 +27,13 @@ jobs:
 
       - name: Install robotgo dependencies
         run: make install_linux_deps
-        
+
       - name: Run unit tests
         run: make test
 
       - name: Build Linux binary
         run: make build_linux
-          
+
       - name: Build Windows binary
         run: make build_windows
 

@@ -27,6 +27,6 @@ jobs:
 
       - name: Install robotgo dependencies
         run: make install_linux_deps
-        
+
       - name: Run unit tests
         run: make test
