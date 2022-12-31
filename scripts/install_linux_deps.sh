@@ -18,4 +18,5 @@ package_list_robotgo=(
     libz-mingw-w64-dev
 )
 
+sudo apt-get update
 sudo apt-get install -y "${package_list_robotgo[@]}"
