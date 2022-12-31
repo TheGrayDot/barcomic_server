@@ -1,4 +1,4 @@
-package server
+package barcomic_server
 
 import (
 	"crypto/rand"

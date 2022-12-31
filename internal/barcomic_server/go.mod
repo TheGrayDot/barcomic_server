@@ -1,4 +1,4 @@
-module server
+module barcomic_server
 
 go 1.18
 

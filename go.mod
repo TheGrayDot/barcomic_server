@@ -2,7 +2,7 @@ module thegraydot.io/barcomic_server
 
 go 1.18
 
-require internal/server v0.2.0
+require internal/barcomic_server v0.2.0
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -27,4 +27,4 @@ require (
 	rsc.io/qr v0.2.0 // indirect
 )
 
-replace internal/server => ./internal/server
+replace internal/barcomic_server => ./internal/barcomic_server

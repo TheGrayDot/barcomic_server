@@ -1,4 +1,4 @@
-package server
+package barcomic_server
 
 import (
 	"flag"
@@ -23,7 +23,7 @@ var config Config
 var Version = "dev"
 var Hash = "mode"
 
-func Server() {
+func Start() {
 	// Parse the CLI arguments
 	handleArguments()
 
