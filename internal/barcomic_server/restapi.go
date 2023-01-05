@@ -14,13 +14,7 @@ import (
 var success []byte = []byte("OK")
 var error []byte = []byte("ERROR")
 
-func restAPI() {
-	startServer()
-}
-
-func startServer() {
-	fmt.Printf("[*] Starting server using %s:%s\n", config.addr, config.port)
-
+func startRestApi() {
 	fmt.Println("[*] Generating TLS certificate...")
 	tlsCert := GenerateTLSCertificate()
 
