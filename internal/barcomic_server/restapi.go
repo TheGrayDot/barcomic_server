@@ -7,6 +7,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"regexp"
+	"strconv"
 
 	"github.com/go-vgo/robotgo"
 )
@@ -31,8 +33,7 @@ func startRestApi() {
 	http.HandleFunc("/barcode", barcodeHandler)
 	http.HandleFunc("/", otherHandler)
 
-	fmt.Println("[*] Starting HTTP server...")
-	fmt.Println()
+	fmt.Printf("[*] Starting HTTP server...\n\n")
 	if err := server.ListenAndServeTLS("", ""); err != nil {
 		log.Fatalf("ERROR: %v", err)
 	}
@@ -40,7 +41,7 @@ func startRestApi() {
 
 func verboseLoggingHandler(req *http.Request) {
 	// Only log if not unit testing
-	if flag.Lookup("test.v") == nil {
+	if flag.Lookup("test.v") == nil && config.verbose {
 		fmt.Printf("INFO: %s %s %s\n", req.Method, req.RemoteAddr, req.RequestURI)
 	}
 }
@@ -61,18 +62,44 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 	verboseLoggingHandler(req)
 	if req.Method == "POST" {
-		req.Body = http.MaxBytesReader(w, req.Body, 10000)
+		// UPC + EAN5 is longest barcode with 17 chars
+		// So set max byte length to 20
+		req.Body = http.MaxBytesReader(w, req.Body, 20)
 		buffer, err := io.ReadAll(req.Body)
 		if err != nil {
-			panic(err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(error)
+			return
 		}
 
 		bufferString := string(buffer)
+
+		// Check request body is digits
+		barcodeRegexp := regexp.MustCompile(`\d{12,17}`)
+		match := barcodeRegexp.MatchString(bufferString)
+		if !match {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(error)
+			return
+		}
+
+		// Check request body is a valid UPC
+		isValidUpc := validateUpc(bufferString)
+		if !isValidUpc {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(error)
+			return
+		}
 
 		// Only send to keyvent if not unit testing
 		if flag.Lookup("test.v") == nil {
 			robotgo.TypeStr(bufferString)
 			robotgo.KeyTap("enter")
+		}
+
+		// Print barcode if verbose
+		if config.verbose {
+			fmt.Printf("INFO: %s\n", bufferString)
 		}
 
 		w.WriteHeader(http.StatusOK)
@@ -91,4 +118,27 @@ func otherHandler(w http.ResponseWriter, req *http.Request) {
 		http.NotFound(w, req)
 		return
 	}
+}
+
+func validateUpc(barcode string) bool {
+	// Extract first 11 digits of barcode
+	barcodePrefix := barcode[0:11]
+	// Extract last (check) digit from barcode
+	checkDigit := barcode[11:12]
+
+	// Sum all digits
+	// Even digits are multiplied by 3
+	sum := 0
+	for i, v := range barcodePrefix {
+		value, _ := strconv.Atoi(string(v))
+		if i%2 == 0 {
+			sum += 3 * value
+		} else {
+			sum += value
+		}
+	}
+
+	result := (10 - sum%10) % 10
+	checkDigitInt, _ := strconv.Atoi(string(checkDigit))
+	return result == checkDigitInt
 }

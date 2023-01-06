@@ -25,7 +25,6 @@ func main() {
 		*addr = interactiveNetworkConfiguration(*addr)
 	}
 
-	// fmt.Println(*addr, *port, *verbose)
 	barcomic_server.Start(*addr, *port, *verbose)
 }
 
@@ -38,7 +37,6 @@ func interactiveNetworkConfiguration(addr string) string {
 	}
 
 	var availableInterfaces [][2]string
-	// availableInterfaces := make([][2]string, 0)
 
 	// Loop through interfaces
 	for _, i := range interfaces {
