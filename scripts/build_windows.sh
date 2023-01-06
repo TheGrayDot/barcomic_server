@@ -10,8 +10,8 @@ CC=x86_64-w64-mingw32-gcc \
 CXX=x86_64-w64-mingw32-g++ \
 go build \
 -ldflags \
-"-X internal/barcomic_server.Version=$PROJECT_VERSION \
--X internal/barcomic_server.Hash=$COMMIT_HASH" \
+"-X main.Version=$PROJECT_VERSION \
+-X main.Hash=$COMMIT_HASH" \
 -o "bin/$BINARY_PREFIX-windows.exe" \
 cmd/main.go
 

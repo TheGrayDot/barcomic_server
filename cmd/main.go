@@ -12,7 +12,12 @@ import (
 	"internal/barcomic_server"
 )
 
+var Version = "dev"
+var Hash = "mode"
+
 func main() {
+	fmt.Printf("[*] barcomic_server %s-%s\n", Version, Hash)
+
 	// Configure command line arguments
 	addr := flag.String("a", "0.0.0.0", "IP address to listen on")
 	port := flag.String("p", "9999", "Port to listen on")
@@ -23,6 +28,16 @@ func main() {
 	// If requested, run the interactive server config
 	if *interactive {
 		*addr = interactiveNetworkConfiguration(*addr)
+	}
+
+	// Validate IP address and port before starting server
+	if !validateAddr(*addr) {
+		fmt.Printf("[*] Error: Invalid IP address %s\n", *addr)
+		os.Exit(1)
+	}
+	if !validatePort(*port) {
+		fmt.Printf("[*] Error: Invalid port %s\n", *port)
+		os.Exit(1)
 	}
 
 	barcomic_server.Start(*addr, *port, *verbose)
