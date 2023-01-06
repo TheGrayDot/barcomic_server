@@ -91,10 +91,13 @@ func barcodeHandler(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		// Only send to keyvent if not unit testing
+		// Only type keystrokes if not unit testing
+		// or if keystrokes is disabled
 		if flag.Lookup("test.v") == nil {
-			robotgo.TypeStr(bufferString)
-			robotgo.KeyTap("enter")
+			if !config.disableKeystrokes {
+				robotgo.TypeStr(bufferString)
+				robotgo.KeyTap("enter")
+			}
 		}
 
 		// Print barcode if verbose

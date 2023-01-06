@@ -8,16 +8,18 @@ import (
 )
 
 type Config struct {
-	addr    string
-	port    string
-	verbose bool
+	addr              string
+	port              string
+	disableKeystrokes bool
+	verbose           bool
 }
 
 var config Config
 
-func Start(addr, port string, verbose bool) {
+func Start(addr, port string, disableKeystrokes, verbose bool) {
 	config.addr = addr
 	config.port = port
+	config.disableKeystrokes = disableKeystrokes
 	config.verbose = verbose
 
 	// Print QR code for user to scan

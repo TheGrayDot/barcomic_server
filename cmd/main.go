@@ -21,6 +21,7 @@ func main() {
 	// Configure command line arguments
 	addr := flag.String("a", "0.0.0.0", "IP address to listen on")
 	port := flag.String("p", "9999", "Port to listen on")
+	disableKeystrokes := flag.Bool("k", false, "Disable keystrokes")
 	interactive := flag.Bool("i", true, "Run interactive configuration")
 	verbose := flag.Bool("v", false, "Prints verbose information")
 	flag.Parse()
@@ -40,7 +41,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	barcomic_server.Start(*addr, *port, *verbose)
+	barcomic_server.Start(*addr, *port, *disableKeystrokes, *verbose)
 }
 
 func interactiveNetworkConfiguration(addr string) string {
