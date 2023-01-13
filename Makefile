@@ -27,3 +27,6 @@ build_linux:
 
 build_windows:
 	./scripts/build_windows.sh
+
+build_darwin:
+	./scripts/build_darwin.sh
