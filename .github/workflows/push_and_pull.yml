@@ -50,5 +50,5 @@ jobs:
       - name: Install golang dependencies
         run: make install_golang_deps
 
-      - name: Build Darwin binary
-        run: make build_darwin
+      - name: Run unit tests
+        run: make test
