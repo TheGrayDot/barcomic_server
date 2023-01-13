@@ -9,14 +9,14 @@ import (
 	"strconv"
 	"strings"
 
-	"internal/barcomic_server"
+	"github.com/TheGrayDot/barcomic/internal/barcomic"
 )
 
 var Version = "dev"
 var Hash = "mode"
 
 func main() {
-	fmt.Printf("[*] barcomic_server %s-%s\n", Version, Hash)
+	fmt.Printf("[*] barcomic %s-%s\n", Version, Hash)
 
 	// Configure command line arguments
 	addr := flag.String("a", "0.0.0.0", "IP address to listen on")
@@ -41,7 +41,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	barcomic_server.Start(*addr, *port, *disableKeystrokes, *verbose)
+	barcomic.Start(*addr, *port, *disableKeystrokes, *verbose)
 }
 
 func interactiveNetworkConfiguration(addr string) string {

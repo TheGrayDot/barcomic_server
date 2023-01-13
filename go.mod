@@ -1,15 +1,16 @@
-module thegraydot.io/barcomic_server
+module github.com/TheGrayDot/barcomic
 
 go 1.19
 
-require internal/barcomic_server v1.0.0
+require (
+	github.com/go-vgo/robotgo v1.0.0-beta6
+	github.com/mdp/qrterminal v1.0.1
+)
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
-	github.com/go-vgo/robotgo v1.0.0-beta6 // indirect
 	github.com/lufia/plan9stats v0.0.0-20220913051719-115f729f3c8c // indirect
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
-	github.com/mdp/qrterminal v1.0.1 // indirect
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect
 	github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934 // indirect
@@ -26,5 +27,3 @@ require (
 	golang.org/x/sys v0.4.0 // indirect
 	rsc.io/qr v0.2.0 // indirect
 )
-
-replace internal/barcomic_server => ./internal/barcomic_server

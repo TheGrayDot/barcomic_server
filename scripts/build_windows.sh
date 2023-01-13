@@ -13,6 +13,6 @@ go build \
 "-X main.Version=$PROJECT_VERSION \
 -X main.Hash=$COMMIT_HASH" \
 -o "bin/$BINARY_PREFIX-windows.exe" \
-cmd/main.go
+cmd/barcomic/main.go
 
 chmod u+x "bin/$BINARY_PREFIX-windows.exe"

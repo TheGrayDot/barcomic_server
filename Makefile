@@ -5,7 +5,7 @@ clean:
 	./scripts/build_clean.sh
 
 install_golang_deps:
-	@go get internal/barcomic_server
+	@go get ./internal/barcomic
 
 install_linux_deps:
 	./scripts/install_linux_deps.sh
@@ -17,10 +17,10 @@ format:
 	@gofmt -l .
 
 test:
-	@go test -v internal/barcomic_server
+	@go test -v ./internal/barcomic
 
 coverage:
-	@go test -cover internal/barcomic_server
+	@go test -cover ./internal/barcomic
 
 build_linux:
 	./scripts/build_linux.sh

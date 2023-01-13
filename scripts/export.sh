@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-BINARY_PREFIX="barcomic_server"
+BINARY_PREFIX="barcomic"
 MAJOR="1"
 MINOR="0"
 PATCH="0"

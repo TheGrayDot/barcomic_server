@@ -1,4 +1,4 @@
-package barcomic_server
+package barcomic
 
 import (
 	"fmt"

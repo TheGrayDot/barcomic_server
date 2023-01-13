@@ -4,12 +4,12 @@
 source scripts/export.sh
 
 GOARCH=amd64 \
-GOOS=linux \
+GOOS=darwin \
 go build \
 -ldflags \
 "-X main.Version=$PROJECT_VERSION \
 -X main.Hash=$COMMIT_HASH" \
--o "bin/$BINARY_PREFIX-linux" \
+-o "bin/$BINARY_PREFIX-darwin" \
 cmd/barcomic/main.go
 
-chmod u+x "bin/$BINARY_PREFIX-linux"
+chmod u+x "bin/$BINARY_PREFIX-darwin"
