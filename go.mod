@@ -3,13 +3,13 @@ module github.com/TheGrayDot/barcomic
 go 1.19
 
 require (
-	github.com/go-vgo/robotgo v1.0.0-beta6
+	github.com/go-vgo/robotgo v1.0.0-beta6.2
 	github.com/mdp/qrterminal v1.0.1
 )
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
-	github.com/lufia/plan9stats v0.0.0-20220913051719-115f729f3c8c // indirect
+	github.com/lufia/plan9stats v0.0.0-20230110061619-bbe2e5e100de // indirect
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect

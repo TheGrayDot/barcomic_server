@@ -26,6 +26,11 @@ func main() {
 	verbose := flag.Bool("v", false, "Prints verbose information")
 	flag.Parse()
 
+	// If address is provided, set interactive to false
+	if addr != nil {
+		*interactive = false
+	}
+
 	// If requested, run the interactive server config
 	if *interactive {
 		*addr = interactiveNetworkConfiguration(*addr)
