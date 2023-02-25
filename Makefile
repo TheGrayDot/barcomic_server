@@ -11,7 +11,7 @@ install_linux_deps:
 	./scripts/install_linux_deps.sh
 
 update_golang_packages:
-	./scripts/update_golang_packages.sh
+	@go get -u ./...; go mod tidy
 
 format:
 	@gofmt -l .
