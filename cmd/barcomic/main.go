@@ -19,7 +19,7 @@ func main() {
 	fmt.Printf("[*] barcomic %s-%s\n", Version, Hash)
 
 	// Configure command line arguments
-	addr := flag.String("a", "0.0.0.0", "IP address to listen on")
+	addr := flag.String("a", "", "Address to listen on")
 	port := flag.String("p", "9999", "Port to listen on")
 	disableKeystrokes := flag.Bool("k", false, "Disable keystrokes")
 	interactive := flag.Bool("i", true, "Run interactive configuration")
@@ -27,7 +27,7 @@ func main() {
 	flag.Parse()
 
 	// If address is provided, set interactive to false
-	if addr != nil {
+	if *addr != "" {
 		*interactive = false
 	}
 
