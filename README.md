@@ -6,6 +6,10 @@
 
 An HTTP API for receiving comic book barcodes from the Barcomic Android application
 
+## Barcomic App
+
+The Barcomic application for Android and iOS (which leverages this HTTP API) is in active development and not currently publicly available. Unsure of the release date, but aiming to release before end of 2023.
+
 ## Latest Releases
 
 - [Linux 64bit (`barcomic-linux`)](https://github.com/TheGrayDot/barcomic_server/releases/latest/download/barcomic-linux)
@@ -16,8 +20,8 @@ An HTTP API for receiving comic book barcodes from the Barcomic Android applicat
 
 - Download [latest release](https://github.com/TheGrayDot/barcomic_server/releases/latest/) from GitHub releases page
 - Double click to run the program
-- This should automatically open and start the server in interactive mode
-- Pick an IP address from the list, usually you Ethernet or Wi-Fi adapter, so the Barcomic Android app can connect
+- This should automatically open and start the server in interactive mode, if it doesn't, open a terminal and run (e.g., `./barcomic-linux` on Linux)
+- Pick an IP address from the list, usually you Ethernet or Wi-Fi adapter, so the Barcomic Android app can connect to the server
 - Connect the Barcomic Android app using the QR code
 
 ## Command Arguments
@@ -52,3 +56,21 @@ Use this if you don't want to have the server "type" the barcode out. Good when 
 ```
 ./barcomic-linux -k -v
 ```
+
+## Build Project
+
+Compiled binaries are provided in GitHub releases for this project. However, the following instructions provide some general guidance on building the project. The barcomic server has the following requirements:
+
+- Go (>= 1.19)
+- Make
+
+Additionally, the [`robotgo` Golang package](https://github.com/go-vgo/robotgo) is required to send barcodes as keystrokes. This package has a variety of requirements depending on the operating system. Please see the [`robotgo` requirement documentation](https://github.com/go-vgo/robotgo#requirements) for platform-specific information.
+
+If you are compiling on Linux, perform the following steps:
+
+```
+make install_linux_deps
+make build_linux
+```
+
+The compiled binaries will be created in the `bin` folder. For more detailed information on how the project is compiled, refer to the `build_*` scripts in the `scripts` folder - where there is a script for each supported platform.

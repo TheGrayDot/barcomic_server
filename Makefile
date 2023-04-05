@@ -30,3 +30,6 @@ build_windows:
 
 build_darwin:
 	./scripts/build_darwin.sh
+
+release:
+	./scripts/git_tag_and_release.sh
