@@ -10,15 +10,17 @@ import (
 type Config struct {
 	addr              string
 	port              string
+	enableHttps		  bool
 	disableKeystrokes bool
 	verbose           bool
 }
 
 var config Config
 
-func Start(addr, port string, disableKeystrokes, verbose bool) {
+func Start(addr, port string, enableHttps, disableKeystrokes, verbose bool) {
 	config.addr = addr
 	config.port = port
+	config.enableHttps = enableHttps
 	config.disableKeystrokes = disableKeystrokes
 	config.verbose = verbose
 

@@ -18,24 +18,38 @@ var error []byte = []byte("ERROR")
 
 func startRestApi() {
 	fmt.Println("[*] Generating TLS certificate...")
-	tlsCert := GenerateTLSCertificate()
+	if config.enableHttps {
+		tlsCert := GenerateTLSCertificate()
+		tlsConfig := &tls.Config{
+			Certificates: []tls.Certificate{tlsCert},
+		}
 
-	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{tlsCert},
-	}
+		server := http.Server{
+			Addr:      config.addr + ":" + config.port,
+			TLSConfig: tlsConfig,
+		}
 
-	server := http.Server{
-		Addr:      config.addr + ":" + config.port,
-		TLSConfig: tlsConfig,
-	}
+		http.HandleFunc("/health", healthHandler)
+		http.HandleFunc("/barcode", barcodeHandler)
+		http.HandleFunc("/", otherHandler)
 
-	http.HandleFunc("/health", healthHandler)
-	http.HandleFunc("/barcode", barcodeHandler)
-	http.HandleFunc("/", otherHandler)
+		fmt.Printf("[*] Starting HTTPS server...\n\n")
+		if err := server.ListenAndServeTLS("", ""); err != nil {
+			log.Fatalf("ERROR: %v", err)
+		}
+	} else {
+		server := http.Server{
+			Addr: config.addr + ":" + config.port,
+		}
 
-	fmt.Printf("[*] Starting HTTP server...\n\n")
-	if err := server.ListenAndServeTLS("", ""); err != nil {
-		log.Fatalf("ERROR: %v", err)
+		http.HandleFunc("/health", healthHandler)
+		http.HandleFunc("/barcode", barcodeHandler)
+		http.HandleFunc("/", otherHandler)
+
+		fmt.Printf("[*] Starting HTTP server...\n\n")
+		if err := server.ListenAndServe(); err != nil {
+			log.Fatalf("ERROR: %v", err)
+		}
 	}
 }
 
