@@ -3,6 +3,8 @@
 
 source scripts/export.sh
 
+mkdir bin
+
 GOARCH=amd64 \
 GOOS=linux \
 go build \

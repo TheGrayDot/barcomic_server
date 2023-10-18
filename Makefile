@@ -4,6 +4,15 @@ run:
 clean:
 	./scripts/build_clean.sh
 
+docker_run:
+	docker image build -t barcomic .; \
+	docker run --name barcomic -p 8080:80 barcomic
+
+docker_clean:
+	docker container stop barcomic; \
+	docker container rm barcomic; \
+	docker image rm barcomic
+
 install_golang_deps:
 	@go get ./internal/barcomic
 
