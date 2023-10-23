@@ -14,7 +14,7 @@ require (
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/jezek/xgb v1.1.0 // indirect
 	github.com/kbinani/screenshot v0.0.0-20230812210009-b87d31814237 // indirect
-	github.com/lufia/plan9stats v0.0.0-20230326075908-cb1d2100619a // indirect
+	github.com/lufia/plan9stats v0.0.0-20231016141302-07b5767bb0ed // indirect
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect

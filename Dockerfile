@@ -8,7 +8,7 @@ COPY ./scripts /barcomic/scripts
 # Remove instances of robotgo from source
 RUN sed -i '/robotgo/d' ./internal/barcomic/restapi.go
 
-# TCreate new Go module without robotgo
+# Create new Go module without robotgo
 RUN go mod init github.com/TheGrayDot/barcomic
 RUN go get -v github.com/mdp/qrterminal@v1.0.1
 
