@@ -54,7 +54,7 @@ func interactiveNetworkConfiguration(addr string) string {
 	// Get all network interfaces
 	interfaces, err := net.Interfaces()
 	if err != nil {
-		fmt.Print(fmt.Errorf("selectIpAddress: %+v\n", err.Error()))
+		fmt.Print(fmt.Errorf("[*] Error: %+v\n", err.Error()))
 		return "0.0.0.0"
 	}
 
@@ -92,7 +92,12 @@ func interactiveNetworkConfiguration(addr string) string {
 	fmt.Print("[*] Enter IP address [0.0.0.0]: ")
 	var addrInput string
 	fmt.Scanln(&addrInput)
-	addr = strings.Trim(addrInput, " ")
+	addrInput = strings.Trim(addrInput, " ")
+
+	// Set IP to any address - default action
+	if addrInput == "" {
+		addrInput = "0.0.0.0"
+	}
 
 	// Check for valid input address
 	validAddress := validateAddr(addrInput)
