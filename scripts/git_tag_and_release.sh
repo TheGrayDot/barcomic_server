@@ -1,7 +1,8 @@
 #!/bin/bash
 
 
-source scripts/export.sh
+cd "$(dirname "$0")" || exit 1
+source ./export.sh
 
 echo "[*] Current version: $PROJECT_VERSION"
 
