@@ -15,7 +15,7 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v6
         with:
-          go-version: '1.21'
+          go-version: '1.24'
           check-latest: true
           cache: true
 
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_and_release_darwin:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
@@ -53,7 +53,7 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v6
         with:
-          go-version: '1.21'
+          go-version: '1.24'
           check-latest: true
           cache: true
 
