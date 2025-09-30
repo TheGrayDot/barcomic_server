@@ -1,4 +1,4 @@
-FROM golang:1.21-bookworm
+FROM golang:1.24-bookworm
 
 WORKDIR /barcomic
 COPY ./cmd /barcomic/cmd
