@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Go environment
         uses: actions/setup-go@v6
@@ -48,7 +48,7 @@ jobs:
     runs-on: macos-14
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Go environment
         uses: actions/setup-go@v6
